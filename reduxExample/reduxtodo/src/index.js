@@ -1,26 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import Reducer, { initialState } from './redux/reducer';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-const store = createStore(
-  Reducer,
-  initialState,
-);
+import initializeStore from './initializeStore';
 
+const store = initializeStore();
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
+const Todo = React.lazy(() => import('./components/Todo/Todo'))
+// const Module2 = React.lazy(() => import('./modules/module2'));
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function App () {
+  return (
+    <React.Suspense fallback='loading'>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch>
+            <Route path='/' exact component={Todo} />
+            {/* <Route path='/module2' exact component={Module2} /> */}
+          </Switch>
+        </BrowserRouter>
+      </Provider>
+    </React.Suspense>
+  )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))

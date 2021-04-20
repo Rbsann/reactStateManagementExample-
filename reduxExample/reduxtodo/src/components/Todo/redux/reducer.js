@@ -3,7 +3,7 @@ export const initialState = {
 };
 
 export default function Reducer(state = initialState, action) {
-  console.log('action', action.data)
+  console.log('action', action)
   switch (action.type) {
     case 'TODO_INSERT':
       return { ...state, todoList:[...state.todoList, action.todoInput] }
